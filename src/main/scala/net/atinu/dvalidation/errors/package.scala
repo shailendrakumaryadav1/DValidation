@@ -53,10 +53,7 @@ package object errors {
       41 * (
         41 * (
           41 * (
-            41 + value.hashCode
-          ) + msgKey.hashCode
-        ) + Path.unwrap(path).hashCode
-      ) + args.hashCode
+            41 + value.hashCode) + msgKey.hashCode) + Path.unwrap(path).hashCode) + args.hashCode
   }
 
   class IsNotEqualError(valueExpected: Any, value: Any, path: PathString = Path.SingleSlash) extends AbstractDomainError(value, "error.dvalidation.notEqual", path, Seq(valueExpected.toString)) {
@@ -87,13 +84,13 @@ package object errors {
   }
 
   class IsNotGreaterThenError(valueMin: Any, value: Any, isInclusive: Boolean, path: PathString = Path.SingleSlash)
-      extends AbstractDomainError(value, "error.dvalidation.notGreaterThen", path, Seq(valueMin.toString, isInclusive.toString)) {
+    extends AbstractDomainError(value, "error.dvalidation.notGreaterThen", path, Seq(valueMin.toString, isInclusive.toString)) {
 
     def copyWithPath(path: PathString) = new IsNotGreaterThenError(valueMin, value, isInclusive, path)
   }
 
   class IsNotLowerThenError(valueMax: Any, value: Any, isInclusive: Boolean, path: PathString = Path.SingleSlash)
-      extends AbstractDomainError(value, "error.dvalidation.notSmallerThen", path, Seq(valueMax.toString, isInclusive.toString)) {
+    extends AbstractDomainError(value, "error.dvalidation.notSmallerThen", path, Seq(valueMax.toString, isInclusive.toString)) {
 
     def copyWithPath(path: PathString) = new IsNotLowerThenError(valueMax, value, isInclusive, path)
   }
@@ -101,13 +98,13 @@ package object errors {
   sealed trait WrongSizeError extends DomainError
 
   class IsToSmallError(valueMin: Any, value: Any, path: PathString = Path.SingleSlash)
-      extends AbstractDomainError(value, "error.dvalidation.tooSmallError", path, Seq(valueMin.toString)) with WrongSizeError {
+    extends AbstractDomainError(value, "error.dvalidation.tooSmallError", path, Seq(valueMin.toString)) with WrongSizeError {
 
     def copyWithPath(path: PathString) = new IsToSmallError(valueMin, value, path)
   }
 
   class IsToBigError(valueMax: Any, value: Any, path: PathString = Path.SingleSlash)
-      extends AbstractDomainError(value, "error.dvalidation.tooBigError", path, Seq(valueMax.toString)) with WrongSizeError {
+    extends AbstractDomainError(value, "error.dvalidation.tooBigError", path, Seq(valueMax.toString)) with WrongSizeError {
 
     def copyWithPath(path: PathString) = new IsToBigError(valueMax, value, path)
   }

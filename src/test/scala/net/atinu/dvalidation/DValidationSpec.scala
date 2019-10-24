@@ -218,8 +218,7 @@ class DValidationSpec extends ValidationSuite {
     val vtest = VTest(1, "sdf", Some("a"))
     val res: DValidation[VTest] = vtest.validateWith(
       ensure(vtest.a)("should be 1", 1)(_ == 1),
-      notBlank(vtest.b)
-    )
+      notBlank(vtest.b))
     res should beValidResult(vtest)
   }
 
@@ -227,12 +226,10 @@ class DValidationSpec extends ValidationSuite {
     val vtest = VTest(1, "", Some("a"))
     val res = vtest.validateWith(
       ensure(vtest.a)("validation.equal", 2)(_ == 2),
-      notBlank(vtest.b)
-    )
+      notBlank(vtest.b))
     res should beInvalidWithErrors(
       new CustomValidationError(1, "validation.equal", Seq("2")),
-      new IsEmptyStringError()
-    )
+      new IsEmptyStringError())
   }
 
   case class VTestNested(value: Int, nest: VTest)
@@ -242,27 +239,23 @@ class DValidationSpec extends ValidationSuite {
     val validateWith = vtest.validateWith(
       (vtest.a is_== 2) forAttribute 'a,
       notBlank(vtest.b) forAttribute 'b,
-      isSome(vtest.c) forAttribute 'c
-    )
+      isSome(vtest.c) forAttribute 'c)
     validateWith should beInvalidWithErrors(
       new IsNotEqualError(1, 2).nestAttribute('a),
       new IsEmptyStringError("/b".asPath),
-      new IsNoneError("/c".asPath)
-    )
+      new IsNoneError("/c".asPath))
 
     val vTestNested = VTestNested(5, vtest)
     val resNest = vTestNested.validateWith(
       isEqual(vTestNested.value, 1).forAttribute('value),
-      validateWith.forAttribute('nest)
-    )
+      validateWith.forAttribute('nest))
     resNest should beInvalidWithErrors(
       new IsNotEqualError(5, 1)
         .nestAttribute('value),
       new IsNotEqualError(1, 2)
         .nestAttribute('a).nestAttribute('nest),
       new IsEmptyStringError("/nest/b".asPath),
-      new IsNoneError("/nest/c".asPath)
-    )
+      new IsNoneError("/nest/c".asPath))
   }
 
   case class VTestSeq(value: Int, tests: Seq[VTest])
@@ -276,23 +269,19 @@ class DValidationSpec extends ValidationSuite {
       value.validateWith(
         isEqual(value.a, 2) forAttribute 'a,
         notBlank(value.b) forAttribute 'b,
-        isSome(value.c) forAttribute 'c
-      )
+        isSome(value.c) forAttribute 'c)
     }
 
     val res = vtseq.validateWith(
-      isEqual(vtseq.value, 2) forAttribute 'value
-    ).withValidations(
-        validSequence(vtseq.tests, vtestValidator) forAttribute 'tests
-      )
+      isEqual(vtseq.value, 2) forAttribute 'value).withValidations(
+        validSequence(vtseq.tests, vtestValidator) forAttribute 'tests)
 
     res should beInvalidWithErrors(
       new IsNotEqualError(1, 2).nestAttribute('value),
       new IsNotEqualError(1, 2).nest("/tests/[0]/a".asPath),
       new IsEmptyStringError("/tests/[0]/b".asPath),
       new IsNoneError("/tests/[0]/c".asPath),
-      new IsEmptyStringError("/tests/[1]/b".asPath)
-    )
+      new IsEmptyStringError("/tests/[1]/b".asPath))
   }
 
   test("validate a option") {
