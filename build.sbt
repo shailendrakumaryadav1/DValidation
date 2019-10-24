@@ -2,7 +2,7 @@ name := "dvalidation"
 
 organization := "net.atinu"
 
-version := "7.2.7.0.2"
+version := "7.2.7.0.2-SNAPSHOT"
 
 scalaVersion := "2.12.9"
 
