@@ -32,8 +32,7 @@ object UsageSamples extends App {
   val res: DValidation[Musician] = mikael.validateWith(
     notBlank(mikael.name) forAttribute 'name,
     ensure(mikael.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-    hasElements(mikael.instruments) forAttribute 'instruments
-  )
+    hasElements(mikael.instruments) forAttribute 'instruments)
   // => Success(User(Mikael Åkerfeldt,40))
 
   // Validation Templates
@@ -41,8 +40,7 @@ object UsageSamples extends App {
     musician.validateWith(
       notBlank(musician.name) forAttribute 'name,
       ensure(musician.age)(key = "error.dvalidation.legalage", args = 18)(_ > 18) forAttribute 'age,
-      hasElements(musician.instruments) forAttribute 'instruments
-    )
+      hasElements(musician.instruments) forAttribute 'instruments)
   }
   musicianValidator(mikael)
   // => Success(User(Mikael Åkerfeldt,40))
@@ -53,16 +51,13 @@ object UsageSamples extends App {
   val max = Musician("Max Mustermann", 29, List(Piano, Guitar))
 
   val stringInstrumentValidator = Validator.template[Instrument](i =>
-    ensure(i)(key = "error.dvalidation.stringinstrument", args = i.classification)(_.classification == StringInstrument)
-  )
+    ensure(i)(key = "error.dvalidation.stringinstrument", args = i.classification)(_.classification == StringInstrument))
 
   max.validateWith(
     notBlank(max.name) forAttribute 'name,
     ensure(max.age)("error.dvalidation.legalage", 18)(_ > 18) forAttribute 'age,
-    hasElements(max.instruments) forAttribute 'instruments
-  ).withValidations(
-      validSequence(max.instruments, stringInstrumentValidator) forAttribute 'instruments
-    )
+    hasElements(max.instruments) forAttribute 'instruments).withValidations(
+      validSequence(max.instruments, stringInstrumentValidator) forAttribute 'instruments)
   // => Failure(DomainError(path: /instruments/[0], value: Piano, msgKey: error.dvalidation.stringinstrument, args: Keyboard))
 
   // applicative validation

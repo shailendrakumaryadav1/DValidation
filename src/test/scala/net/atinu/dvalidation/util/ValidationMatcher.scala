@@ -26,7 +26,8 @@ trait ValidationMatcher {
 
   class ValidationIsSuccessMatcher extends Matcher[Validation[_, _]] {
     override def apply(validation: Validation[_, _]): MatchResult = {
-      MatchResult(validation.isSuccess,
+      MatchResult(
+        validation.isSuccess,
         s"validation failed with errors ($validation)",
         s"validation successful")
     }
@@ -61,10 +62,10 @@ trait ValidationMatcher {
 
   class ValidationIsInvalidMatcher extends Matcher[Validation[_, _]] {
     override def apply(validation: Validation[_, _]): MatchResult = {
-      MatchResult(validation.isFailure,
+      MatchResult(
+        validation.isFailure,
         "validation successful",
-        s"validation failed with errors ($validation)"
-      )
+        s"validation failed with errors ($validation)")
     }
   }
 

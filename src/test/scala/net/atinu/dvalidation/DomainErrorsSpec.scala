@@ -10,8 +10,7 @@ class DomainErrorsSpec extends ValidationSuite {
     DomainErrors.withErrors(
       new IsEmptyStringError("/tests/[0]/b".asPath),
       new IsNoneError("/tests/[0]/c".asPath),
-      new IsEmptyStringError("/tests/[1]/b".asPath)
-    ).errorsOfType[IsNoneError] should contain(new IsNoneError("/tests/[0]/c".asPath))
+      new IsEmptyStringError("/tests/[1]/b".asPath)).errorsOfType[IsNoneError] should contain(new IsNoneError("/tests/[0]/c".asPath))
   }
 
   test("can map over domain errors") {
@@ -43,8 +42,7 @@ class DomainErrorsSpec extends ValidationSuite {
     val e: DomainErrors = DomainErrors.withErrors(
       new IsEmptyStringError("/tests/[0]/b".asPath),
       new IsNoneError("/tests/[0]/c".asPath),
-      new IsEmptyStringError("/tests/[1]/b".asPath)
-    )
+      new IsEmptyStringError("/tests/[1]/b".asPath))
     val a = e match {
       case DomainErrors(e1, as @ _*) => e1
     }
